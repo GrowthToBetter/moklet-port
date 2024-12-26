@@ -122,7 +122,7 @@ export default function Navbar() {
                             variant="outline"
                             className="w-full text-black"
                             onClick={() =>
-                              router.push("/profile/notification/Karya")
+                              router.push("/notification")
                             }>
                             Notification
                           </Button>

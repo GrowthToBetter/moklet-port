@@ -14,31 +14,33 @@ export default async function Home() {
         select: {
           id: true,
         },
-        where:{
-          status:"VERIFIED"
-        }
+        where: {
+          status: "VERIFIED",
+        },
       },
     },
   });
+  
 
   const usersWithFileCounts = topUsers
-    .map((user, index) => ({
+    .map((user) => ({
       name: user.name,
       classes: user.clasess || "N/A",
       nomination: user.name,
-      number: `${index + 1}`,
       fileCount: user.File.length,
     }))
+    .filter((user) => user.fileCount > 0) 
     .sort((a, b) => b.fileCount - a.fileCount) 
-    .slice(0, 5);
+    .slice(0, 5); 
 
-  const formattedData: TypeGraphics[] = usersWithFileCounts.map((user) => ({
+  const formattedData: TypeGraphics[] = usersWithFileCounts.map((user, i) => ({
     name: user.name,
     classes: user.classes,
     nomination: user.nomination,
-    number: user.number,
+    number: `${i + 1}`,
     date_time: new Date(),
   }));
+  
   return (
   <SectionContainer>
     <TopFiveData data={formattedData} title="Data Siswa Membuat Product Paling Banyak" label="Product" /> 

@@ -3,7 +3,7 @@ import Hero from "./components/Hero";
 import prisma from "@/lib/prisma";
 import { FileFullPayload, userFullPayload } from "@/utils/relationsip";
 import { nextGetServerSession } from "@/lib/authOption";
-import { PageContainer } from "@/app/components/layout/PageContainer";
+import { SectionContainer } from "@/app/components/layout/SectionContainer";
 
 export default async function Karya(){
     const session = await nextGetServerSession();
@@ -15,8 +15,8 @@ export default async function Karya(){
   });
   const getGenre = await prisma.genre.findMany();
     return(
-        <PageContainer>
+        <SectionContainer>
             <Hero currentUser={getCurrentUser as userFullPayload} session={session} ListData={getFile as FileFullPayload[]} genre={getGenre} />
-        </PageContainer>
+        </SectionContainer>
     )
 }

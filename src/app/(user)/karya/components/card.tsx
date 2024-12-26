@@ -174,7 +174,7 @@ export const FileCard: React.FC<FileCardProps> = ({
           <Button
             variant="default"
             onClick={onRead}
-            className="text-white"
+            className="text-white hover:text-Secondary"
             aria-label={`Read ${file.filename}`}>
             Kunjungi
           </Button>
@@ -182,6 +182,7 @@ export const FileCard: React.FC<FileCardProps> = ({
             <Button
               variant="base"
               onClick={onLike}
+              className="p-1"
               aria-label={`Like ${file.filename}. Current likes: ${file.Like}`}>
               Like: {file.Like}
             </Button>

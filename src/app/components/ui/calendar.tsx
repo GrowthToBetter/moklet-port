@@ -1,11 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { DayPicker, DropdownProps } from "react-day-picker";
+import { DayPicker } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "./button";
 import {
   Select,
   SelectContent,
@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "./select";
 import { ScrollArea } from "./scroll-area";
+import { buttonVariants } from "./button";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -61,7 +62,12 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        Dropdown: ({ value, onChange, children }: DropdownProps) => {
+        Dropdown: ({
+          value,
+          onChange,
+          children,
+          ...props
+        }: React.SelectHTMLAttributes<HTMLSelectElement>) => {
           const options = React.Children.toArray(
             children,
           ) as React.ReactElement<React.HTMLProps<HTMLOptionElement>>[];
@@ -97,8 +103,6 @@ function Calendar({
             </Select>
           );
         },
-        IconLeft: ({}) => <ChevronLeft className="h-4 w-4" />,
-        IconRight: ({}) => <ChevronRight className="h-4 w-4" />,
       }}
       {...props}
     />

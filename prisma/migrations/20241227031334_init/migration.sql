@@ -21,6 +21,7 @@ CREATE TABLE `fileWork` (
     `file_id` CHAR(36) NOT NULL,
     `filename` VARCHAR(191) NOT NULL,
     `userClasses` VARCHAR(191) NULL,
+    `type` VARCHAR(191) NULL,
     `status` ENUM('PENDING', 'VERIFIED', 'DENIED') NOT NULL DEFAULT 'PENDING',
     `userId` VARCHAR(191) NOT NULL,
     `path` VARCHAR(191) NOT NULL,

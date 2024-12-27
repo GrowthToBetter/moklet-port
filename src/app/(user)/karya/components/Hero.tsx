@@ -71,7 +71,7 @@ const Main: React.FC<MainProps> = ({
           ? filteredByName
           : selected === "All"
           ? ListData.filter(
-              (dataList: FileFullPayload) => dataList.userClasses === classes
+              (dataList: FileFullPayload) => dataList.userType === classes
             )
           : classes === "All"
           ? ListData.filter(
@@ -79,7 +79,7 @@ const Main: React.FC<MainProps> = ({
             )
           : ListData.filter(
               (dataList: FileFullPayload) =>
-                dataList.genre === selected && dataList.userClasses === classes
+                dataList.genre === selected && dataList.userType === classes
             );
       setFilteredUser(finalFilteredUsers);
     };

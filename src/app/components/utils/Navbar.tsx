@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma";
+
 import NAVBAR from "./comp-nav";
 
 export const NAV_ITEMS = [
@@ -25,8 +25,7 @@ export const NAV_ITEMS = [
   },
 ];
 export default async function Navbar(){
-  const listClass = await prisma.classes.findMany();
   return (
-    <NAVBAR classData={listClass}/>
+    <NAVBAR />
   )
 }

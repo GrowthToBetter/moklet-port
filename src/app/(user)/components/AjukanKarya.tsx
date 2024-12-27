@@ -67,8 +67,7 @@ export default function UploadForm({
         return toast.error("Kelas belum diisi, dilahkan isi di profile", {
           id: toastId,
         });
-      const classes = extractClassPrefix(userClasses)||"";
-      formData.append("classes", classes);
+      formData.append("classes", userClasses);
 
       const response = await updateUploadFileByLink(formData);
 

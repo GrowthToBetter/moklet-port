@@ -12,7 +12,7 @@ model User {
   email         String     @unique
   photo_profile String?
   name          String
-  clasess       String?
+  clasess       Type?
   absent        String?
   Phone         String?
   role          Role       @default(SISWA)
@@ -29,7 +29,7 @@ model User {
 model fileWork {
   id          String        @id @default(uuid()) @map("file_id") @db.Char(36)
   filename    String
-  userClasses String?
+  userType    Type
   type        String?
   status      RequestStatus @default(PENDING)
   userId      String
@@ -61,13 +61,6 @@ model Genre {
 
 
 
-model Classes {
-  id     String @id @default(uuid()) @map("classes") @db.Char(36)
-  class  String
-  major  String
-  number String
-}
-
 model UserAuth {
   id         String    @id @default(uuid()) @map("userauth_id") @db.Char(36)
   password   String?
@@ -93,4 +86,10 @@ enum RequestStatus {
   PENDING
   VERIFIED
   DENIED
+}
+
+enum Type {
+  SISWA
+  GURU
+  ALUMNI
 }

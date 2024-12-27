@@ -9,11 +9,11 @@ import { buttonVariants } from "../ui/button";
 
 export const Contact = [
   {
-    email: "baratrahjaga@gmail.com",
+    email: "Jean Richnerd Rantabaratrahjaga",
     phone: "+6281235667629",
   },
   {
-    email: "chuniarin12@gmail.com",
+    email: "Muhammad Chusni Agus, M.Pd., Gr.",
     phone: "+6285106655664",
   },
 ];

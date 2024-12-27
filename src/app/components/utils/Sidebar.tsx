@@ -44,16 +44,16 @@ const BASE_SIDEBAR_ITEMS: SidebarItem[] = [
     requiredRole: ["ALL"],
   },
   {
-    title: "Classes",
-    url: "/admin/addClass",
-    icon: Book,
-    isActive: true,
-    requiredRole: ["ADMIN"],
-  },
-  {
     title: "Category",
     url: "/admin/dataCategory",
     icon: SquareStack,
+    isActive: false,
+    requiredRole: ["ADMIN"],
+  },
+  {
+    title: "Student",
+    url: "/admin/studentData",
+    icon: Book,
     isActive: false,
     requiredRole: ["ADMIN"],
   },

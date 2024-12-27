@@ -11,6 +11,3 @@ export type FileFullPayload = Prisma.fileWorkGetPayload<{
   include: {user: {include: {userAuth: true}}, comment:{include:{user:true}}};
 }>;
 export type GenreFullPayload = Prisma.GenreGetPayload<{select:{Genre: true, id: true}}>;
-
-
-export type classFullPayload = Prisma.ClassesGetPayload<{select:{id: true, class: true, major: true, number: true}}>

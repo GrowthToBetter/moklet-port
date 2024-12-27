@@ -8,12 +8,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { signIn, signOut, useSession } from "next-auth/react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { ModalProfiles } from "./Modal";
-import { classFullPayload } from "@/utils/relationsip";
 import { NAV_ITEMS } from "./Navbar";
 
 
 
-export default function NavbarComp({classData}:{classData:classFullPayload[]}) {
+export default function NavbarComp() {
   const [modal, setModal] = useState<boolean>(false);
   const [prof, setProf] = useState<boolean>(false);
   const [profileModal, setProfileModal] = useState<boolean>(false);
@@ -110,7 +109,7 @@ export default function NavbarComp({classData}:{classData:classFullPayload[]}) {
                       )}
                     </div>
                   )}
-                    <ModalProfiles isOpen={profileModal} onClose={() => setProfileModal(false)} classesData={classData} />
+                    <ModalProfiles isOpen={profileModal} onClose={() => setProfileModal(false)} />
                 </div>
                 <button
                   data-collapse-toggle="navbar-sticky"

@@ -1,11 +1,16 @@
 import React, { ReactNode } from "react";
-import { Dialog, DialogContent, DialogTitle, DialogClose } from "@radix-ui/react-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogClose,
+} from "@radix-ui/react-dialog";
 import { z } from "zod";
 import { Controller } from "react-hook-form";
-import { classFullPayload } from "@/utils/relationsip";
 import toast from "react-hot-toast";
 import { UpdateUserById } from "@/utils/server-action/userGetServerSession";
 import { useZodForm } from "@/utils/use-zod-form";
+import { Type } from "@prisma/client";
 
 // Define Zod schema for validation
 const profileSchema = z.object({
@@ -25,13 +30,20 @@ type ModalProfileProps = {
   className?: string;
 };
 
-export default function ModalProfile({ children, onClose, title, className }: ModalProfileProps) {
+export default function ModalProfile({
+  children,
+  onClose,
+  title,
+  className,
+}: ModalProfileProps) {
   return (
     <div className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[9999] justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-black/50">
       <div className="relative p-4 w-full max-w-4xl mt-10 mb-36 mx-auto max-h-full">
         <div className="relative bg-white rounded-lg shadow">
           <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-            <h3 className="text-xl font-semibold text-gray-900">{title || "Edit Profile"}</h3>
+            <h3 className="text-xl font-semibold text-gray-900">
+              {title || "Edit Profile"}
+            </h3>
             <button
               onClick={onClose}
               type="button"
@@ -62,10 +74,9 @@ export default function ModalProfile({ children, onClose, title, className }: Mo
 type ModalProfilesProps = {
   isOpen: boolean;
   onClose: () => void;
-  classesData: classFullPayload[];
 };
 
-export const ModalProfiles = ({ isOpen, onClose, classesData }: ModalProfilesProps) => {
+export const ModalProfiles = ({ isOpen, onClose }: ModalProfilesProps) => {
   const form = useZodForm({
     schema: profileSchema,
     defaultValues: {
@@ -75,14 +86,12 @@ export const ModalProfiles = ({ isOpen, onClose, classesData }: ModalProfilesPro
   });
 
   const onSubmit = async (values: ProfileFormData) => {
-    console.log(values);
     const toastId = toast.loading("Loading...");
     try {
       const formData = new FormData();
       Object.entries(values).forEach(([key, value]) => {
         formData.append(key, value);
       });
-
       const data = await UpdateUserById(formData);
       if (!data) {
         toast.error("Update Failed", { id: toastId });
@@ -102,7 +111,9 @@ export const ModalProfiles = ({ isOpen, onClose, classesData }: ModalProfilesPro
           <DialogTitle className="text-lg font-bold">Profile</DialogTitle>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-700">
                 Phone Number
               </label>
               <Controller
@@ -119,12 +130,16 @@ export const ModalProfiles = ({ isOpen, onClose, classesData }: ModalProfilesPro
                 )}
               />
               {form.formState.errors.phone && (
-                <p className="text-sm text-red-600">{form.formState.errors.phone.message}</p>
+                <p className="text-sm text-red-600">
+                  {form.formState.errors.phone.message}
+                </p>
               )}
             </div>
 
             <div>
-              <label htmlFor="classes" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="classes"
+                className="block text-sm font-medium text-gray-700">
                 Class
               </label>
               <Controller
@@ -138,18 +153,16 @@ export const ModalProfiles = ({ isOpen, onClose, classesData }: ModalProfilesPro
                     <option value="" disabled>
                       Select a class
                     </option>
-                    {classesData.map((item) => (
-                      <option
-                        key={`${item.class}${item.major} ${item.number}`}
-                        value={`${item.class}${item.major} ${item.number}`}>
-                        {`${item.class}${item.major} ${item.number}`}
-                      </option>
+                    {Object.values(Type).map((item) => (
+                      <option key={item} value={item}>{item}</option>
                     ))}
                   </select>
                 )}
               />
               {form.formState.errors.classes && (
-                <p className="text-sm text-red-600">{form.formState.errors.classes.message}</p>
+                <p className="text-sm text-red-600">
+                  {form.formState.errors.classes.message}
+                </p>
               )}
             </div>
 

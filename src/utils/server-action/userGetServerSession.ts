@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use server";
 
-import { Gender, Genre, RequestStatus, Role } from "@prisma/client";
+import { Gender, Genre, RequestStatus, Role, Type } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import { createUser, updateUser } from "../user.query";
 import { revalidatePath } from "next/cache";
@@ -19,9 +19,9 @@ export const UpdateUserById = async (data: FormData) => {
     const photo_profile = data.get("photo_profile") as string;
     const name = data.get("name") as string;
     const role = data.get("role") as Role;
-    const clasess = data.get("classes") as string;
+    const clasess = data.get("classes") as Type;
     const absent = data.get("absent") as string;
-    const Phone = data.get("Phone") as string;
+    const Phone = data.get("phone") as string;
     const gender = data.get("gender") as Gender;
     if (!id) {
       const create = await createUser({
@@ -88,7 +88,7 @@ export const updateUploadFileByLink = async (data: FormData) => {
   try {
     const name = data.get("name") as string;
     const type = data.get("type") as string;
-    const classes = data.get("classes") as string;
+    const classes = data.get("classes") as Type;
     const genre = data.get("genre") as string;
     const description = data.get("description") as string;
     if (!genre) {
@@ -107,7 +107,7 @@ export const updateUploadFileByLink = async (data: FormData) => {
         filename: name,
         genre,
         path: url,
-        userClasses: classes,
+        userType: classes,
         userId: user.connect.id,
         type,
         description,

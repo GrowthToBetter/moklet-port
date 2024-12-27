@@ -7,7 +7,7 @@ import { SectionContainer } from "@/app/components/layout/SectionContainer";
 export default async function validasi(){
     const session = await nextGetServerSession();
     const getFile = await prisma.fileWork.findMany({
-        where:{NOT:{ userClasses:"DELETE"}}
+        where:{NOT:{ userRole:"DELETE"}}
     })
     const currentUser = await prisma.user.findFirst({
         where:{id:session?.user?.id}

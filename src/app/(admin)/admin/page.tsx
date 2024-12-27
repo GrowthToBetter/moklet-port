@@ -6,6 +6,7 @@ import TableUser from "./components/main/TableUser";
 import { nextGetServerSession } from "@/lib/authOption";
 import { userFullPayload } from "@/utils/relationsip";
 import { signIn } from "next-auth/react";
+import { SectionContainer } from "@/app/components/layout/SectionContainer";
 
 interface cardProps {
   title: string;
@@ -63,7 +64,7 @@ export default async function AdminPage() {
     signIn();
   }
   return (
-    <div className="flex flex-col relative">
+    <SectionContainer>
       <section className="w-full">
         <AdminHeaders data="Dashboard" />
         <section className="max-w-[1440px] ml-[20px] p-4 outline outline-1 outline-slate-200 mx-auto w-full bg-[#F6F6F6]">
@@ -82,7 +83,7 @@ export default async function AdminPage() {
         </section>
       </section>
       <TableUser userData={userData as userFullPayload} dataAdmin={dataAdmin} />
-    </div>
+    </SectionContainer>
   );
 }
 

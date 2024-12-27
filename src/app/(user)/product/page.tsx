@@ -19,13 +19,10 @@ export default async function page() {
     },
   });
   const getGenre=await prisma.genre.findMany();
-  const classess = (
-    await prisma.classes.findMany()
-  ).map((item) => ({ name: item.class }));
   if (!session?.user?.email) return redirect("/signin");
   return (
     <SectionContainer>
-      <AjukanKarya classess={classess} userData={userData as userFullPayload} genre={getGenre}/>
+      <AjukanKarya userData={userData as userFullPayload} genre={getGenre}/>
     </SectionContainer>
   );
 }

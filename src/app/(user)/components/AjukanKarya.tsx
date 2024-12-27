@@ -2,7 +2,6 @@
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { z } from "zod";
-
 import { DropDown } from "@/app/components/utils/Form";
 import { updateUploadFileByLink } from "@/utils/server-action/userGetServerSession";
 import { useZodForm } from "@/utils/use-zod-form";
@@ -23,20 +22,23 @@ const uploadSchema = z.object({
   type: z.string().min(1, "Tipe Product wajib diisi"),
   url: z.string().url("Link Product harus berupa URL valid"),
   genre: z.string().min(1, "Genre wajib dipilih"),
-  classes: z.string().min(1, "Kelas wajib dipilih"),
   description: z.string().min(1, "Deskripsi wajib diisi"),
 });
+
+export const extractClassPrefix = (userClass: string) => {
+  const match = userClass.match(/^(X|XI|XII)/i);
+  return match ? match[0] : null;
+};
+
 
 type UploadFormValues = z.infer<typeof uploadSchema>;
 
 export default function UploadForm({
   userData,
   genre,
-  classess,
 }: {
   userData: userFullPayload;
   genre: { Genre: string }[];
-  classess: { name: string }[];
 }) {
   const router = useRouter();
 
@@ -46,8 +48,7 @@ export default function UploadForm({
       type: "",
       url: "",
       genre: "",
-      classes: "",
-      description:""
+      description: "",
     },
     schema: uploadSchema,
   });
@@ -61,6 +62,13 @@ export default function UploadForm({
       });
       formData.append("userId", userData.id);
       formData.append("role", userData.role);
+      const userClasses = userData.clasess
+      if (!userClasses)
+        return toast.error("Kelas belum diisi, dilahkan isi di profile", {
+          id: toastId,
+        });
+      const classes = extractClassPrefix(userClasses)||"";
+      formData.append("classes", classes);
 
       const response = await updateUploadFileByLink(formData);
 
@@ -150,26 +158,6 @@ export default function UploadForm({
                 value={field.value}
                 handleChange={(value) => field.onChange(value)}
                 name="genre"
-              />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="classes"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>classes</FormLabel>
-              <DropDown
-                label="classes"
-                options={classess.map((c) => ({
-                  label: c.name,
-                  value: c.name,
-                }))}
-                value={field.value}
-                handleChange={(value) => field.onChange(value)}
-                name="classes"
               />
               <FormMessage />
             </FormItem>

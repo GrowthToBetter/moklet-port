@@ -1,13 +1,13 @@
 import React from "react";
 import AdminHeaders from "../components/main/AdminHeaders";
 import prisma from "@/lib/prisma";
-import Table from "../studentData/_components/TableGenre";
+import Table from "./components/tableSchool";
 import { userFullPayload } from "@/utils/relationsip";
 import { nextGetServerSession } from "@/lib/authOption";
 import { SectionContainer } from "@/app/components/layout/SectionContainer";
 
 export default async function teamData() {
-  const dataCategory = await prisma.genre.findMany();
+  const dataSchool = await prisma.classes.findMany();
   const session = await nextGetServerSession();
   const userData = await prisma.user.findFirst({
     where: {
@@ -15,14 +15,12 @@ export default async function teamData() {
     },
     include: {
       userAuth: true,
-      File: true,
-      comment: { include: { file: true } },
     },
   });
   return (
     <SectionContainer>
-      <AdminHeaders data="Data Category" />
-      <Table userData={userData as userFullPayload} dataGenre={dataCategory} />
+      <AdminHeaders data="Data Class" />
+      <Table userData={userData as userFullPayload} dataSchool={dataSchool} />
     </SectionContainer>
   );
 }

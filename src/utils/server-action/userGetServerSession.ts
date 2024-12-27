@@ -1,8 +1,7 @@
-
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use server";
 
-import {   Gender, Genre, RequestStatus, Role,  } from "@prisma/client";
+import { Gender, Genre, RequestStatus, Role } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import { createUser, updateUser } from "../user.query";
 import { revalidatePath } from "next/cache";
@@ -20,7 +19,7 @@ export const UpdateUserById = async (data: FormData) => {
     const photo_profile = data.get("photo_profile") as string;
     const name = data.get("name") as string;
     const role = data.get("role") as Role;
-    const clasess = data.get("clasess") as string;
+    const clasess = data.get("classes") as string;
     const absent = data.get("absent") as string;
     const Phone = data.get("Phone") as string;
     const gender = data.get("gender") as Gender;
@@ -36,6 +35,8 @@ export const UpdateUserById = async (data: FormData) => {
         gender,
       });
       if (!create) throw new Error("Failed to create");
+
+      return create;
     } else if (id) {
       const findUserWithId = await prisma.user.findUnique({
         where: { id },
@@ -54,28 +55,27 @@ export const UpdateUserById = async (data: FormData) => {
         }
       );
       if (!update) throw new Error("Update failed");
+      revalidatePath("/profile");
+      return update;
     } else {
       throw new Error("Email already exists");
     }
-    revalidatePath("/profile");
   } catch (error) {
     console.error("Error updating user:", error);
     throw error;
   }
 };
 
-
-
 export const updateStatus = async (id: string, data: FormData) => {
   try {
     const status = data.get("status") as RequestStatus;
-    const update= await prisma.fileWork.update({
+    const update = await prisma.fileWork.update({
       where: { id: id },
       data: {
-        status
+        status,
       },
-    })
-    if(!update){
+    });
+    if (!update) {
       throw new Error("eror");
     }
     revalidatePath("/AjukanKarya");
@@ -83,7 +83,7 @@ export const updateStatus = async (id: string, data: FormData) => {
   } catch (error) {
     throw new Error((error as Error).message);
   }
-}
+};
 export const updateUploadFileByLink = async (data: FormData) => {
   try {
     const name = data.get("name") as string;
@@ -96,11 +96,11 @@ export const updateUploadFileByLink = async (data: FormData) => {
     }
     const url = data.get("url") as string;
     const userId = data.get("userId") as string;
-    const user={
-      connect:{
-        id:userId
-      }
-    }
+    const user = {
+      connect: {
+        id: userId,
+      },
+    };
     const role = data.get("role") as Role;
     const uploadedFile = await prisma.fileWork.create({
       data: {
@@ -124,7 +124,11 @@ export const updateUploadFileByLink = async (data: FormData) => {
   }
 };
 
-export const UpdateGenreByIdInAdmin = async (userData:userFullPayload , id: string, data: FormData) => {
+export const UpdateGenreByIdInAdmin = async (
+  userData: userFullPayload,
+  id: string,
+  data: FormData
+) => {
   try {
     const session = await nextGetServerSession();
     if (!session?.user) {
@@ -142,7 +146,7 @@ export const UpdateGenreByIdInAdmin = async (userData:userFullPayload , id: stri
     if (!findEmail && id == null) {
       const create = await prisma.genre.create({
         data: {
-          Genre
+          Genre,
         },
       });
       if (!create) throw new Error("Failed to create admin!");
@@ -156,7 +160,7 @@ export const UpdateGenreByIdInAdmin = async (userData:userFullPayload , id: stri
         const update = await prisma.genre.update({
           where: { id: id ?? findUser?.id },
           data: {
-            Genre
+            Genre,
           },
         });
         console.log(update);
@@ -172,7 +176,11 @@ export const UpdateGenreByIdInAdmin = async (userData:userFullPayload , id: stri
     throw new Error((error as Error).message);
   }
 };
-export const UpdateUserByIdInAdmin = async (userData:userFullPayload ,id: string, data: FormData) => {
+export const UpdateUserByIdInAdmin = async (
+  userData: userFullPayload,
+  id: string,
+  data: FormData
+) => {
   try {
     const session = await nextGetServerSession();
     if (!session?.user) {
@@ -241,7 +249,11 @@ export const UpdateUserByIdInAdmin = async (userData:userFullPayload ,id: string
   }
 };
 
-export const UpdateAdminById = async (id: string, data: FormData, userData: userFullPayload) => {
+export const UpdateAdminById = async (
+  id: string,
+  data: FormData,
+  userData: userFullPayload
+) => {
   try {
     const session = await nextGetServerSession();
     if (!session?.user) {
@@ -310,7 +322,7 @@ export const UpdateAdminById = async (id: string, data: FormData, userData: user
   }
 };
 
-export const DeleteGenre = async (id: string, userData:userFullPayload) => {
+export const DeleteGenre = async (id: string, userData: userFullPayload) => {
   try {
     const session = await nextGetServerSession();
     if (!session?.user) {
@@ -332,7 +344,7 @@ export const DeleteGenre = async (id: string, userData:userFullPayload) => {
     console.error("Error deleting user:", error);
     throw new Error((error as Error).message);
   }
-}
+};
 
 export const DeleteUser = async (id: string) => {
   try {
@@ -364,26 +376,24 @@ export const DeleteFile = async (id: string) => {
     if (!session?.user) {
       return { status: 401, message: "Auth Required" };
     }
-      const del = await prisma.fileWork.delete({
-        where: { id },
-      });
-  
-      if (!del) {
-        return { status: 400, message: "Failed to delete from database!" };
-      }
-  
-      revalidatePath("/AjukanKarya");
-      return { status: 200, message: "Delete Success!" };
+    const del = await prisma.fileWork.delete({
+      where: { id },
+    });
+
+    if (!del) {
+      return { status: 400, message: "Failed to delete from database!" };
+    }
+
+    revalidatePath("/AjukanKarya");
+    return { status: 200, message: "Delete Success!" };
   } catch (error) {
     console.error("Error in DeleteFile:", error);
-    return { 
-      status: 500, 
-      message: `Error deleting file: ${(error as Error).message}` 
+    return {
+      status: 500,
+      message: `Error deleting file: ${(error as Error).message}`,
     };
   }
 };
-
-
 
 export const updateRole = async (id: string, data: FormData) => {
   try {
@@ -410,7 +420,6 @@ export const updateRole = async (id: string, data: FormData) => {
   }
 };
 
-
 export const DeleteRoleFileFromNotif = async (id: string) => {
   try {
     const session = await nextGetServerSession();
@@ -435,44 +444,44 @@ export const DeleteRoleFileFromNotif = async (id: string) => {
   }
 };
 
-export const addLike=async (id :string,like: number)=>{
+export const addLike = async (id: string, like: number) => {
   try {
-    const update= await prisma.fileWork.update({
+    const update = await prisma.fileWork.update({
       where: {
-        id: id
+        id: id,
       },
       data: {
-        Like: like
-      }
-    })
-    if(!update){
-      throw new Error("Gagal Menambahkan Like")
+        Like: like,
+      },
+    });
+    if (!update) {
+      throw new Error("Gagal Menambahkan Like");
     }
-    revalidatePath("/")
+    revalidatePath("/");
     return update;
   } catch (error) {
     throw new Error((error as Error).message);
   }
-}
-export const addViews=async (id :string, views: number)=>{
+};
+export const addViews = async (id: string, views: number) => {
   try {
-    const update= await prisma.fileWork.update({
+    const update = await prisma.fileWork.update({
       where: {
-        id: id
+        id: id,
       },
       data: {
-        views
-      }
-    })
-    if(!update){
-      throw new Error("Gagal Menambahkan Like")
+        views,
+      },
+    });
+    if (!update) {
+      throw new Error("Gagal Menambahkan Like");
     }
-    revalidatePath("/")
+    revalidatePath("/");
     return update;
   } catch (error) {
     throw new Error((error as Error).message);
   }
-}
+};
 
 export const UpdateGeneralProfileById = async (data: FormData) => {
   try {
@@ -529,29 +538,114 @@ export const UpdateGeneralProfileById = async (data: FormData) => {
   }
 };
 
-
-export const commentFile=async (comment: string, file:{connect:{id:string}}, user:{connect:{id:string}}) => {
+export const commentFile = async (
+  comment: string,
+  file: { connect: { id: string } },
+  user: { connect: { id: string } }
+) => {
   try {
     const createComment = await prisma.comment.create({
       data: {
-        file:{
-          connect:{
-            id:file.connect.id
-          }
+        file: {
+          connect: {
+            id: file.connect.id,
+          },
         },
-        user:{
-          connect:{
-            id:user.connect.id
-          }
+        user: {
+          connect: {
+            id: user.connect.id,
+          },
         },
         Text: comment,
-      }
-    })
-    if(!createComment){
+      },
+    });
+    if (!createComment) {
       throw new Error("eror");
     }
     return createComment;
   } catch (error) {
     throw new Error((error as Error).message);
   }
-}
+};
+
+export const UpdateClassByIdInAdmin = async (
+  userData: userFullPayload,
+  id: string,
+  data: FormData,
+  num: number[]
+) => {
+  try {
+    const session = await nextGetServerSession();
+    if (!session?.user) {
+      return { status: 401, message: "Auth Required" };
+    }
+    if (userData?.role !== "ADMIN") {
+      return { status: 401, message: "Unauthorize" };
+    }
+    const name = data.get("name") as string;
+    const major = data.get("major") as string;
+
+    const findEmail = await prisma.classes.findFirst({
+      where: { class: name },
+    });
+
+    if (!findEmail && id == null) {
+      for (const indent of num) {
+        const create = await prisma.classes.create({
+          data: {
+            class: name,
+            number: indent.toString(),
+            major,
+          },
+        });
+        if (!create) throw new Error("Failed to create admin!");
+      }
+      revalidatePath("/admin");
+      return { status: 200, message: "Create Success!" };
+    } else if (id) {
+      const findUser = await prisma.classes.findUnique({
+        where: { id },
+      });
+      if (findUser) {
+        for (const indent of num) {
+          const update = await prisma.classes.update({
+            where: { id: id ?? findUser?.id },
+            data: {
+              class: name,
+              number: indent.toString(),
+              major,
+            },
+          });
+          console.log(update);
+          if (!update) throw new Error("Failed to update admin!");
+        }
+        revalidatePath("/admin");
+        return { status: 200, message: "Update Success!" };
+      } else throw new Error("User not found!");
+    }
+    revalidatePath("/admin");
+    return { status: 200, message: "Update Success!" };
+  } catch (error) {
+    console.error("Error update user:", error);
+    throw new Error((error as Error).message);
+  }
+};
+
+
+export const deleteClass = async (id: string) => {
+  try {
+    const session = await nextGetServerSession();
+    if (!session?.user) {
+      throw new Error("eror");
+    }
+    const deleteClass = await prisma.classes.delete({
+      where: { id: id },
+    });
+    if (!deleteClass) {
+      throw new Error("eror");
+    }
+    return deleteClass;
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
+};

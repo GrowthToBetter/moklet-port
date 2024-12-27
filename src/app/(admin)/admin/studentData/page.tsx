@@ -4,6 +4,7 @@ import Table from "./_components/Table";
 import prisma from "@/lib/prisma";
 import { nextGetServerSession } from "@/lib/authOption";
 import { userFullPayload } from "@/utils/relationsip";
+import { SectionContainer } from "@/app/components/layout/SectionContainer";
 
 export default async function studentData() {
   const studentData = await prisma.user.findMany({
@@ -23,9 +24,9 @@ export default async function studentData() {
   });
 
   return (
-    <div className="flex flex-col">
+    <SectionContainer>
       <AdminHeaders data="Student Data" />
       <Table userData={userData as userFullPayload} studentData={studentData} />
-    </div>
+    </SectionContainer>
   );
 }

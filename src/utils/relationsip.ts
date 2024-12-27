@@ -13,3 +13,4 @@ export type FileFullPayload = Prisma.fileWorkGetPayload<{
 export type GenreFullPayload = Prisma.GenreGetPayload<{select:{Genre: true, id: true}}>;
 
 
+export type classFullPayload = Prisma.ClassesGetPayload<{select:{id: true, class: true, major: true, number: true}}>

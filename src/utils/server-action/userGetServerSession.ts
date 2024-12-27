@@ -493,7 +493,7 @@ export const UpdateGeneralProfileById = async (data: FormData) => {
     const photo_profile = data.get("photo_profile") as string;
     const name = data.get("name") as string;
     const role = data.get("role") as Role;
-    const clasess = data.get("clasess") as string;
+    const clasess = data.get("classes") as Type;
     const absent = data.get("absent") as string;
     const Phone = data.get("Phone") as string;
     const gender = data.get("gender") as Gender;

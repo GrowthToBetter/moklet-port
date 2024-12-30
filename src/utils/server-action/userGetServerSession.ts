@@ -567,4 +567,33 @@ export const commentFile = async (
     throw new Error((error as Error).message);
   }
 };
+export const sugestFile = async (
+  comment: string,
+  file: { connect: { id: string } },
+  user: { connect: { id: string } }
+) => {
+  try {
+    const createComment = await prisma.comment.create({
+      data: {
+        fileSugest: {
+          connect: {
+            id: file.connect.id,
+          },
+        },
+        user: {
+          connect: {
+            id: user.connect.id,
+          },
+        },
+        Text: comment,
+      },
+    });
+    if (!createComment) {
+      throw new Error("eror");
+    }
+    return createComment;
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
+};
 

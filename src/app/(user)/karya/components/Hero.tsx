@@ -142,13 +142,13 @@ const Main: React.FC<MainProps> = ({
               className="flex flex-col gap-4 mb-6"
               value={classes as string}
               onValueChange={(value: string) => setClasses(value)}>
-              <div className="grid grid-cols-3 gap-4">
-                {["All", "X", "XI", "XII"].map((classOption) => (
+              <div className="grid grid-cols-2 gap-4">
+                {["All", "SISWA", "GURU", "ALUMNI"].map((classOption) => (
                   <RadioGroup.Item
                     key={classOption}
                     value={classOption}
-                    className="flex items-center gap-2 p-4 rounded-xl hover:bg-slate-100 focus:ring-2 focus:ring-slate-500">
-                    <RadioGroup.Indicator className="w-4 h-4 text-black bg-black rounded-full" />
+                    className="flex items-center gap-2 p-4 rounded-xl text-black hover:bg-slate-100 focus:ring-2 focus:ring-slate-500">
+                    <RadioGroup.Indicator className="w-8 h-4 text-black bg-black rounded-full" />
                     <span className="text-slate-500">{classOption}</span>
                   </RadioGroup.Item>
                 ))}

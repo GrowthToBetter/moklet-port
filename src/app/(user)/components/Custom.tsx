@@ -23,7 +23,7 @@ export const Custom: FC = () => {
             untuk merealisasikan impian anda.
           </Body3>
           <Link
-            href={"/AjukanKarya"}
+            href={"/product"}
             className={buttonVariants({
               variant: "default",
               className: "w-full sm:w-fit",

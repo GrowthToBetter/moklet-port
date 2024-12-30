@@ -9,7 +9,11 @@ export default async function Page() {
   const files = await prisma.fileWork.findMany({
     where: { userId: session?.user?.id },
     include:{
-        comment:true
+        comment:{
+          include:{
+            user:true
+          }
+        }
     }
   });
   return (

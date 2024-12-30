@@ -42,6 +42,7 @@ model fileWork {
   views       Int           @default(0)
   userRole    Role          @default(SISWA)
   createdAt   DateTime      @default(now())
+  suggest     comment[]     @relation("sugest_file")
   comment     comment[]     @relation("comment_file")
 }
 
@@ -52,6 +53,8 @@ model comment {
   fileId String?
   user   User?     @relation("comment", fields: [userId], references: [id])
   file   fileWork? @relation("comment_file", fields: [fileId], references: [id])
+  fileSugestId String?
+  fileSugest   fileWork? @relation("sugest_file", fields: [fileSugestId], references: [id])
 }
 
 model Genre {
@@ -74,6 +77,7 @@ enum Role {
   GURU
   ADMIN
   VALIDATOR
+  VIEWER
   DELETE
 }
 

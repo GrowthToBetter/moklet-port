@@ -102,19 +102,9 @@ export const Footer: FC = () => {
                     {/* SVG Content */}
                   </svg>
                 </Link>
-                <Link href={`mailto:${contact.email}`}>
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    {/* SVG Content */}
-                  </svg>
-                </Link>
               </div>
               <Link
-                href={`mailto:${contact.email}`}
+                href={`https://wa.me/${contact.phone}`}
                 className={buttonVariants({ variant: "link", size: "link" })}>
                 {contact.email}
               </Link>

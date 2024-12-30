@@ -14,7 +14,7 @@ import {
 } from "@/app/components/ui/dropdown-menu";
 import toast from "react-hot-toast";
 import {
-  commentFile,
+  sugestFile,
   updateStatus,
 } from "@/utils/server-action/userGetServerSession";
 import { Textarea } from "@/app/components/ui/textarea";
@@ -111,7 +111,7 @@ export const FileCard: React.FC<FileCardProps> = ({
     if (!user) return toast.error("Anda belum login");
     const toastId = toast.loading("Mengirim komentar...");
     try {
-      const commentFiles = await commentFile(
+      const commentFiles = await sugestFile(
         comment,
         { connect: { id } },
         { connect: { id: user.id as string } }
